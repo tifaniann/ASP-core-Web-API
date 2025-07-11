@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Data
 {
+    // ApplicationDBContext adalah kelas yang mengelola koneksi ke database
     // ApplicationDBContext adalah turunan dari DbContext
     public class ApplicationDBContext : DbContext
     {

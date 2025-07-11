@@ -165,3 +165,7 @@ C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\refint\api.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.pdb
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.genruntimeconfig.cache
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\ref\api.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.sourcelink.json
