@@ -16,12 +16,15 @@ C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCor
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.Service.Abstractions.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.Service.Core.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.Service.EntityFrameworkCore.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.OpenApi.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.Build.Locator.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
@@ -151,6 +154,7 @@ C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.AssemblyInfo.cs
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.sourcelink.json
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\rjimswa.dswa.cache.json
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
@@ -165,7 +169,3 @@ C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\refint\api.dll
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.pdb
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.genruntimeconfig.cache
 C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\ref\api.dll
-C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Mvc.Razor.Extensions.dll
-C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.AspNetCore.Razor.Language.dll
-C:\Users\Admin\Documents\PROGRAM TIFANI\api\bin\Debug\net9.0\Microsoft.CodeAnalysis.Razor.dll
-C:\Users\Admin\Documents\PROGRAM TIFANI\api\obj\Debug\net9.0\api.sourcelink.json
