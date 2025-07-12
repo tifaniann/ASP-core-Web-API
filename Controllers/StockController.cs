@@ -20,11 +20,11 @@ namespace api.Controllers
     //dua diatas wajib ada di setiap controller, fungsinya untuk menyambungkan controller dengan route
     public class StockController : ControllerBase
     {
-        private readonly IStockRepository _stockRepo;
+        private readonly IStockDtoRepository _stockDtoRepo;
         private readonly ApplicationDBContext _context;
-        public StockController(ApplicationDBContext context, IStockRepository stockRepo) // constructor untuk menginisialisasi context dan repository
+        public StockController(ApplicationDBContext context, IStockDtoRepository stockDtoRepo) // constructor untuk menginisialisasi context dan repository
         {
-            _stockRepo = stockRepo;
+            _stockDtoRepo = stockDtoRepo;
             _context = context;
 
         }
@@ -32,7 +32,7 @@ namespace api.Controllers
         [HttpGet] // untuk mengambil
         public async Task<IActionResult> GetAllStock() //IActionResult Adalah interface. interface digunakan untuk kelas yang memiliki perilaku yang sama
         {
-            var stocks = await _stockRepo.GetAllAsync();
+            var stocks = await _stockDtoRepo.GetAllAsync();
             return Ok(stocks); // Kembalikan data dengan status 200 OK. 200 OK adalah status HTTP yang menunjukkan bahwa permintaan berhasil diproses.
         }
 
