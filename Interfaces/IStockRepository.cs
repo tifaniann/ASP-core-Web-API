@@ -1,0 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using api.DTOS.Stock;
+using api.Models;
+
+namespace api.Interfaces
+{
+    // Antarmuka ini mendefinisikan kontrak untuk repositori yang mengelola entitas Stock.
+    // Repositori ini akan digunakan untuk mengakses data Stock dari database.
+    //interface digunakan untuk kelas yang memiliki perilaku yang sama
+    public interface IStockRepository
+    {
+        Task<List<StockDto>> GetAllAsync();
+        // Task<Stock?> GetByIdAsync(int id);
+    }
+}
