@@ -1,13 +1,15 @@
 using api.Data;
+using api.Interfaces;
 // using api.Interfaces;
 using api.Models;
-// using api.Repository;
+using api.Repository;
 // using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+
 
 //program utama untuk aplikasi ASP.NET Core
 //di gambarkan seperti belakangan yang mengatur alur eksekusi aplikasi
@@ -28,6 +30,8 @@ builder.Services.AddSwaggerGen(); //Ini adalah baris yang membuat Swagger bekerj
 builder.Services.AddDbContext<ApplicationDBContext>(options => // menambahkan DbContext ke dalam layanan (untuk database)
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IStockRepository, StockRepository>();
+
 var app = builder.Build(); 
 app.MapControllers(); //Mendaftarkan semua endpoint di controller kamu ke routing system
 //dia akan mencari ini: [ApiController]
@@ -35,7 +39,7 @@ app.MapControllers(); //Mendaftarkan semua endpoint di controller kamu ke routin
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) //untuk menjalankan swagger
+if (app.Environment.IsDevelopment()) //untuk menjalankan swagger; tampilan ui swagger
 {
     app.UseSwagger();
     app.UseSwaggerUI();
