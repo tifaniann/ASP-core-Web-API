@@ -12,7 +12,8 @@ namespace api.Interfaces
     //interface digunakan untuk kelas yang memiliki perilaku yang sama
     public interface IStockRepository
     {
-        Task<List<StockDto>> GetAllAsync();
+        Task<List<StockDto>> GetAllAsyncDto();
+        Task<List<Stock>> GetAllAsync();
         // Task<Stock?> GetByIdAsync(int id);
     }
 }

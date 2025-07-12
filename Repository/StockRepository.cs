@@ -21,13 +21,19 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<StockDto>> GetAllAsync()
+        public async Task<List<StockDto>> GetAllAsyncDto()
         {
             return await _context.Stocks
                 .Select(s => s.ToStockDto())
                 .ToListAsync();
             //s(alias semacam i dalam looping): Untuk setiap data Stock yang diambil, ubah menjadi StockDto menggunakan metode ekstensi ToStockDto() yang ada di Mappers/StockMappers.cs
             // _context: Ambil semua data dari tabel Stocks di database, dan ubah jadi List<Stock>
+        }
+
+        public async Task<List<Stock>> GetAllAsync()
+        {
+            return await _context.Stocks.ToListAsync();
+            // Mengambil semua data dari tabel Stocks di database
         }
 
     }
