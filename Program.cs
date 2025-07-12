@@ -13,33 +13,36 @@ using Microsoft.OpenApi.Models;
 //di gambarkan seperti belakangan yang mengatur alur eksekusi aplikasi
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers()
+builder.Services.AddControllers() // ini fungsinya untuk menambahkan layanan kontroler ke dalam aplikasi
     .AddJsonOptions(options =>
     {
-        options.JsonSerializerOptions.WriteIndented = true;
+        options.JsonSerializerOptions.WriteIndented = true; //agar json terlihat lebih rapi
     });
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddSwaggerGen(); //Ini adalah baris yang membuat Swagger bekerja.
 
-builder.Services.AddDbContext<ApplicationDBContext>(options =>
+builder.Services.AddDbContext<ApplicationDBContext>(options => // menambahkan DbContext ke dalam layanan (untuk database)
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var app = builder.Build();
-app.MapControllers();
+var app = builder.Build(); 
+app.MapControllers(); //Mendaftarkan semua endpoint di controller kamu ke routing system
+//dia akan mencari ini: [ApiController]
+// [Route("...")]
+
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()) //untuk menjalankan swagger
 {
     app.UseSwagger();
     app.UseSwaggerUI();
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection(); // untuk mengalihkan permintaan HTTP ke HTTPS
 
 // ============================
 // Bagian weatherforecast remark
