@@ -36,5 +36,44 @@ namespace api.Repository
             // Mengambil semua data dari tabel Stocks di database
         }
 
+        public async Task<StockDto?> GetByIdAsync(int id)
+        {
+            var stock = await _context.Stocks.FindAsync(id);  // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
+            return stock?.ToStockDto();
+            // Mengambil data Stock berdasarkan id, jika ditemukan, ubah menjadi StockDto
+        }
+
+        public async Task<StockDto> CreateAsync(CreateStockRequestDto stockDto)
+        {
+            var stockModel = stockDto.ToStockFromCreateDto();
+            await _context.Stocks.AddAsync(stockModel); // _context: Tambahkan data Stock baru ke tabel Stocks di database
+            await _context.SaveChangesAsync(); // Simpan perubahan ke database
+            return stockModel.ToStockDto();
+        }
+
+        public async Task<StockDto?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
+        {
+            var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            if (stock == null)
+            {
+                return null; // Jika tidak ditemukan, kembalikan null
+            }
+            stockDto.MapToExistingStock(stock);
+            await _context.SaveChangesAsync();
+            return stock.ToStockDto();
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var stock = await _context.Stocks.FindAsync(id);
+            if (stock == null)
+            {
+                return false; 
+            }
+            _context.Stocks.Remove(stock); // Hapus data Stock dari tabel Stocks di database
+            await _context.SaveChangesAsync(); // Simpan perubahan ke database
+            return true;
+        }
+
     }
 }

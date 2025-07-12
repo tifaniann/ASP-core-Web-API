@@ -44,51 +44,42 @@ namespace api.Controllers
         {
             //await digunakan untuk menunggu proses pengambilan data dari database selesai
             // sehingga tidak akan menghalangi thread utama aplikasi; agar controller nggak macet
-            var stock = await _context.Stocks.FindAsync(id); // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
+            var stock = await _stockDtoRepo.GetByIdAsync(id);
             if (stock == null)
             {
                 return NotFound(); // Jika tidak ditemukan, kembalikan status 404 Not Found
             }
-            return Ok(stock.ToStockDto()); // Jika ditemukan, kembalikan data dengan status 200 OK
+            return Ok(stock); // Jika ditemukan, kembalikan data dengan status 200 OK
         }
 
         [HttpPost] // untuk menambahkan data baru
         public async Task<IActionResult> CreateStock([FromBody] CreateStockRequestDto stockDto) // [FromBody] digunakan untuk mengambil data dari body request. jadi kita mengambil data dari body request kemudian dimasukkan ke dalam database
         {
-            var stockModel = stockDto.ToStockFromCreateDto();
-            await _context.Stocks.AddAsync(stockModel); // _context: Tambahkan data Stock baru ke tabel Stocks di database
-            await _context.SaveChangesAsync(); // Simpan perubahan ke database
-            return CreatedAtAction(nameof(GetStockById), new { id = stockModel.Id }, stockModel.ToStockDto()); // Kembalikan status 201 Created dan lokasi dari data yang baru dibuat
+            var stockModel = await _stockDtoRepo.CreateAsyncDto(stockDto); // _context: Tambahkan data Stock baru ke tabel Stocks di database
+            return CreatedAtAction(nameof(GetStockById), new { id = stockModel.Id }, stockModel); // Kembalikan status 201 Created dan lokasi dari data yang baru dibuat
 
         }
 
         [HttpPut("{id}")] // untuk mengupdate data berdasarkan id, contoh PUT http://localhost:5000/stock/7
         public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockRequestDto UpdateDto) // [FromRoute] digunakan untuk mengambil nilai dari route, int id adalah parameter yang akan diambil dari URL
         {
-            var stockModel = await _context.Stocks.FirstOrDefaultAsync(s => s.Id == id); // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
-            if (stockModel == null)
+            var updatedStock = await _stockDtoRepo.UpdateAsyncDto(id, UpdateDto);
+            if (updatedStock == null)
             {
-                return NotFound(); // Jika tidak ditemukan, kembalikan status 404 Not Found
+                return NotFound(); 
             }
-
-            UpdateDto.MapToExistingStock(stockModel);
-            await _context.SaveChangesAsync();
-
-            return Ok(stockModel.ToStockDto()); // Jika ditemukan, ubah data Stock yang ada dengan data yang baru dan kembalikan status 200 OK
+            return Ok(updatedStock);
         }
 
         [HttpDelete("{id}")] // untuk menghapus data berdasarkan id, contoh DELETE http://localhost:5000/stock/7
         public async Task<IActionResult> DeleteStock([FromRoute] int id) // [FromRoute] digunakan untuk mengambil nilai dari route, int id adalah parameter yang akan diambil dari URL
         {
-            var stockModel = await _context.Stocks.FindAsync(id); // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
-            if (stockModel == null)
+            var success = await _stockDtoRepo.DeleteAsync(id);
+            if (!success)
             {
-                return NotFound(); // Jika tidak ditemukan, kembalikan status 404 Not Found
+                return NotFound();
             }
-            //async tidak ada di remove karena remove tidak membutuhkan proses yang lama
-            _context.Stocks.Remove(stockModel); // _context: Hapus data Stock dari tabel Stocks di database
-            await _context.SaveChangesAsync();
-            return NoContent(); // Kembalikan status 204 No Content, yang berarti permintaan berhasil diproses tetapi tidak ada konten yang dikembalikan
+            return NoContent(); // Jika berhasil dihapus, kembalikan status 204 No Content
         }
     }
 }
