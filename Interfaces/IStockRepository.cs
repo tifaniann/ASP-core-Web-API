@@ -15,8 +15,8 @@ namespace api.Interfaces
         Task<List<StockDto>> GetAllAsyncDto();
         Task<List<Stock>> GetAllAsync();
         Task<StockDto?> GetByIdAsync(int id);
-        Task<StockDto> CreateAsync(CreateStockRequestDto Stockdto);
-        Task<StockDto?> UpdateAsync(int id, UpdateStockRequestDto Stockdto);
+        Task<StockDto> CreateAsyncDto(CreateStockRequestDto Stockdto);
+        Task<StockDto?> UpdateAsyncDto(int id, UpdateStockRequestDto Stockdto);
         Task<bool> DeleteAsync(int id);
     }
 }
