@@ -6,6 +6,7 @@ using api.Data;
 using api.DTOS.Comment;
 using api.Interfaces;
 using api.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
@@ -19,10 +20,16 @@ namespace api.Repository
         }
         public async Task<List<CommentDto>> GetAllAsyncDto()
         {
-            return _context.Comments
+            return await _context.Comments
                 .Select(c => c.ToCommentDto())
-                .ToList();
+                .ToListAsync();
             // Mengambil semua data dari tabel Comments di database, dan ubah jadi List<CommentDto>
+        }
+
+        public async Task<CommentDto?> GetByIdAsync(int id)
+        {
+            var comment = await _context.Comments.FindAsync(id);
+            return comment?.ToCommentDto(); //? Jika ditemukan, ubah menjadi CommentDto
         }
     }
 }

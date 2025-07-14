@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+
 
 
 //program utama untuk aplikasi ASP.NET Core
@@ -27,9 +30,18 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen(); //Ini adalah baris yang membuat Swagger bekerja.
 
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    {
+        // untuk menghindari masalah referensi loop saat serialisasi JSON
+        // Contoh kasus: comments -> di dalam stock -> comments (akan looping saat get data di stock), bisa menyebabkan "Object cycle detected"
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; 
+    });
+
+
 builder.Services.AddDbContext<ApplicationDBContext>(options => // menambahkan DbContext ke dalam layanan (untuk database)
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+//ditambahkan jika menambah repository
 builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 

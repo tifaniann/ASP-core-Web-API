@@ -32,13 +32,14 @@ namespace api.Repository
 
         public async Task<List<Stock>> GetAllAsync()
         {
-            return await _context.Stocks.ToListAsync();
+            return await _context.Stocks.Include(c => c.Comments).ToListAsync();
             // Mengambil semua data dari tabel Stocks di database
         }
 
         public async Task<StockDto?> GetByIdAsync(int id)
         {
-            var stock = await _context.Stocks.FindAsync(id);  // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
+            // _context: Ambil data dari tabel Stocks berdasarkan id yang diberikan
+            var stock = await _context.Stocks.Include(c => c.Comments).FirstOrDefaultAsync(x => x.Id == id); 
             return stock?.ToStockDto();
             // Mengambil data Stock berdasarkan id, jika ditemukan, ubah menjadi StockDto
         }
