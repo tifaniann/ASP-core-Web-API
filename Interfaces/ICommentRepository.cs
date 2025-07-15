@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.DTOS.Comment;
+using api.Models;
 
 namespace api.Interfaces
 {
@@ -10,5 +11,6 @@ namespace api.Interfaces
     {
         Task<List<CommentDto>> GetAllAsyncDto();
         Task<CommentDto?> GetByIdAsync(int id);
+        Task<Comment> createAsync(Comment comment); 
     }
 }

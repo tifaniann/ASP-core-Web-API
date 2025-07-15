@@ -6,6 +6,7 @@ using api.Data;
 using api.DTOS.Comment;
 using api.Interfaces;
 using api.Mappers;
+using api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -18,6 +19,14 @@ namespace api.Repository
         {
             _context = context;
         }
+
+        public async Task<Comment> createAsync(Comment commentModel)
+        {
+            await _context.Comments.AddAsync(commentModel);
+            await _context.SaveChangesAsync();
+            return commentModel;
+        }
+
         public async Task<List<CommentDto>> GetAllAsyncDto()
         {
             return await _context.Comments
