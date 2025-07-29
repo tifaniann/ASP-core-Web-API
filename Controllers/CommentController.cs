@@ -11,6 +11,7 @@ using api.Mappers;
 namespace api.Controllers
 {
     [Route("api/comments")]
+    // [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
     {
@@ -29,29 +30,53 @@ namespace api.Controllers
             return Ok(comments);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
+        // [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "CommentDetails")]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
         {
             var comment = await _commentRepo.GetByIdAsync(id);
             if (comment == null)
             {
                 return NotFound($"Comment with ID {id} does not exist.");
             }
-            return Ok(comment);
+            return Ok(comment); //
         }
 
         [HttpPost("{stockId}")]
 
-        public async Task<IActionResult> CreateComment(int stockId, [FromBody] CreateCommentDto commentDto)
+        public async Task<IActionResult> CreateComment([FromRoute] int stockId, CreateCommentDto commentDto)
         {
             if (!await _stockRepo.IsStockExists(stockId))
             {
-                return NotFound($"Stock with ID {stockId} does not exit.");
+                return BadRequest($"Stock with ID {stockId} does not exist.");
             }
 
-            var comment = commentDto.ToCommentFromCreate(stockId);
-            await _commentRepo.createAsync(comment);
-            return CreatedAtAction(nameof(GetByIdAsync), new { id = comment.Id }, comment .ToCommentDto());        
+            var commentMdl = commentDto.ToCommentFromCreate(stockId);
+            await _commentRepo.createAsync(commentMdl);
+            Console.WriteLine($"Created ID: {commentMdl.Id}");
+            return CreatedAtRoute("CommentDetails", new { id = commentMdl.Id }, commentMdl);
+        }
+
+        [HttpPut("{stockId}")]
+        public async Task<IActionResult> UpdateComment([FromRoute] int stockId, [FromBody] UpdateCommentDto commentDto)
+        {
+            var update_comment = await _commentRepo.UpdateAsync(stockId, commentDto.ToCommentFromUpdate(stockId));
+            if (!await _stockRepo.IsStockExists(stockId))
+            {
+                return BadRequest($"Stock with ID {stockId} does not exist.");
+            }
+            return CreatedAtRoute("CommentDetails", new { id = update_comment.Id }, update_comment);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        {
+            var isDeleted = await _commentRepo.DeleteAsync(id);
+            if (!isDeleted)
+            {
+                return NotFound($"Comment with ID {id} does not exist.");
+            }
+            return NoContent(); // Mengembalikan status 204 No Content jika berhasil menghapus
         }
 
        

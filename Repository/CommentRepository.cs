@@ -20,11 +20,23 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<Comment> createAsync(Comment commentModel)
+        public async Task<Comment> createAsync(Comment commentmodel)
         {
-            await _context.Comments.AddAsync(commentModel);
+            await _context.Comments.AddAsync(commentmodel);
             await _context.SaveChangesAsync();
-            return commentModel;
+            return commentmodel;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var stock = await _context.Comments.FindAsync(id);
+            if (stock == null)
+            {
+                return false; 
+            }
+            _context.Comments.Remove(stock); // Hapus data comments dari tabel comments di database
+            await _context.SaveChangesAsync(); // Simpan perubahan ke database
+            return true;
         }
 
         public async Task<List<CommentDto>> GetAllAsyncDto()
@@ -39,6 +51,20 @@ namespace api.Repository
         {
             var comment = await _context.Comments.FindAsync(id);
             return comment?.ToCommentDto(); //? Jika ditemukan, ubah menjadi CommentDto
+        }
+
+        public async Task<Comment?> UpdateAsync(int id, Comment Commentmodeldto)
+        {
+            var commentUpdate = await _context.Comments.FindAsync(id);
+            if (commentUpdate == null)
+            {
+                return null;
+            }
+
+            commentUpdate.Title = Commentmodeldto.Title;
+            commentUpdate.Content = Commentmodeldto.Content;
+            await _context.SaveChangesAsync();
+            return commentUpdate;
         }
     }
 }

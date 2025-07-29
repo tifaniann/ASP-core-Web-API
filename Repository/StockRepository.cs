@@ -46,7 +46,7 @@ namespace api.Repository
 
         public async Task<StockDto> CreateAsyncDto(CreateStockRequestDto stockDto)
         {
-            var stockModel = stockDto.ToStockFromCreateDto();
+            var stockModel = stockDto.ToStockFromCreateDto(); //
             await _context.Stocks.AddAsync(stockModel); // _context: Tambahkan data Stock baru ke tabel Stocks di database
             await _context.SaveChangesAsync(); // Simpan perubahan ke database
             return stockModel.ToStockDto();
@@ -59,7 +59,7 @@ namespace api.Repository
             {
                 return null; // Jika tidak ditemukan, kembalikan null
             }
-            stockDto.MapToExistingStock(stock);
+            stockDto.MapToExistingStock(stock); // 
             await _context.SaveChangesAsync();
             return stock.ToStockDto();
         }
