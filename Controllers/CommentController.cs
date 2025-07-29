@@ -26,6 +26,10 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comments = await _commentRepo.GetAllAsyncDto();
             return Ok(comments);
         }
@@ -34,6 +38,10 @@ namespace api.Controllers
         [HttpGet("{id}", Name = "CommentDetails")]
         public async Task<IActionResult> GetByIdAsync([FromRoute] int id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var comment = await _commentRepo.GetByIdAsync(id);
             if (comment == null)
             {
@@ -46,6 +54,10 @@ namespace api.Controllers
 
         public async Task<IActionResult> CreateComment([FromRoute] int stockId, CreateCommentDto commentDto)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (!await _stockRepo.IsStockExists(stockId))
             {
                 return BadRequest($"Stock with ID {stockId} does not exist.");
@@ -60,6 +72,10 @@ namespace api.Controllers
         [HttpPut("{stockId}")]
         public async Task<IActionResult> UpdateComment([FromRoute] int stockId, [FromBody] UpdateCommentDto commentDto)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var update_comment = await _commentRepo.UpdateAsync(stockId, commentDto.ToCommentFromUpdate(stockId));
             if (!await _stockRepo.IsStockExists(stockId))
             {
@@ -71,6 +87,10 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var isDeleted = await _commentRepo.DeleteAsync(id);
             if (!isDeleted)
             {

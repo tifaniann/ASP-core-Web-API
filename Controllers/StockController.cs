@@ -32,6 +32,10 @@ namespace api.Controllers
         [HttpGet] // untuk mengambil
         public async Task<IActionResult> GetAllStock() //IActionResult Adalah interface. interface digunakan untuk kelas yang memiliki perilaku yang sama
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var stocks = await _stockDtoRepo.GetAllAsyncDto();
             return Ok(stocks); // Kembalikan data dengan status 200 OK. 200 OK adalah status HTTP yang menunjukkan bahwa permintaan berhasil diproses.
         }
@@ -42,6 +46,10 @@ namespace api.Controllers
         //async await digunakan untuk mempercepat proses pengambilan data dari database/kode
         public async Task<IActionResult> GetStockById([FromRoute] int id)  // [FromRoute] digunakan untuk mengambil nilai dari route, int id adalah parameter yang akan diambil dari URL
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             //await digunakan untuk menunggu proses pengambilan data dari database selesai
             // sehingga tidak akan menghalangi thread utama aplikasi; agar controller nggak macet
             var stock = await _stockDtoRepo.GetByIdAsync(id);
@@ -55,6 +63,10 @@ namespace api.Controllers
         [HttpPost] // untuk menambahkan data baru
         public async Task<IActionResult> CreateStock([FromBody] CreateStockRequestDto stockDto) // [FromBody] digunakan untuk mengambil data dari body request. jadi kita mengambil data dari body request kemudian dimasukkan ke dalam database
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var stockModel = await _stockDtoRepo.CreateAsyncDto(stockDto); // _context: Tambahkan data Stock baru ke tabel Stocks di database
             return CreatedAtAction(nameof(GetStockById), new { id = stockModel.Id }, stockModel); // Kembalikan status 201 Created dan lokasi dari data yang baru dibuat
 
@@ -63,6 +75,10 @@ namespace api.Controllers
         [HttpPut("{id}")] // untuk mengupdate data berdasarkan id, contoh PUT http://localhost:5000/stock/7
         public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockRequestDto UpdateDto) // [FromRoute] digunakan untuk mengambil nilai dari route, int id adalah parameter yang akan diambil dari URL
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var updatedStock = await _stockDtoRepo.UpdateAsyncDto(id, UpdateDto);
             if (updatedStock == null)
             {
@@ -74,6 +90,10 @@ namespace api.Controllers
         [HttpDelete("{id}")] // untuk menghapus data berdasarkan id, contoh DELETE http://localhost:5000/stock/7
         public async Task<IActionResult> DeleteStock([FromRoute] int id) // [FromRoute] digunakan untuk mengambil nilai dari route, int id adalah parameter yang akan diambil dari URL
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var success = await _stockDtoRepo.DeleteAsync(id);
             if (!success)
             {
