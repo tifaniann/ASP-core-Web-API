@@ -31,6 +31,14 @@ namespace api.Mappers
             };
         }
 
+        public static void MapToExistingComment(this UpdateCommentDto dto, Comment existingComment)
+        {
+            // existingComment.Id = stockId;
+            existingComment.Title = dto.Title;
+            existingComment.Content = dto.Content;
+            
+        }
+
         public static Comment ToCommentFromUpdate(this UpdateCommentDto commentDto, int stockId)
         {
             return new Comment

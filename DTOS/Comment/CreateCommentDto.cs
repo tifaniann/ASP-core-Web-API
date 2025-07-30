@@ -13,7 +13,7 @@ namespace api.DTOS.Comment
         public string Title { get; set; } = string.Empty;
         [Required]
         [StringLength(500, ErrorMessage = "Content must be 500 characters or less")]
-        public string Content { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty; 
       
     }
 }

@@ -46,7 +46,12 @@ namespace api.Repository
 
         public async Task<StockDto> CreateAsyncDto(CreateStockRequestDto stockDto)
         {
-            var stockModel = stockDto.ToStockFromCreateDto(); //
+            int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
+
+            // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Stocks
+            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Stocks', RESEED, {maxId})");
+
+            var stockModel = stockDto.ToStockFromCreateDto(); 
             await _context.Stocks.AddAsync(stockModel); // _context: Tambahkan data Stock baru ke tabel Stocks di database
             await _context.SaveChangesAsync(); // Simpan perubahan ke database
             return stockModel.ToStockDto();

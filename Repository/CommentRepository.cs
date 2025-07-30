@@ -22,9 +22,28 @@ namespace api.Repository
 
         public async Task<Comment> createAsync(Comment commentmodel)
         {
+            int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
+
+            // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Comments
+            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
             await _context.Comments.AddAsync(commentmodel);
             await _context.SaveChangesAsync();
             return commentmodel;
+        }
+
+        public async Task<CommentDto> createAsyncDto(CreateCommentDto commentDtomodel, int stockId)
+        {
+            int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
+
+            // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Comments
+            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
+
+            // Insert comment baru
+            var commentModel = commentDtomodel.ToCommentFromCreate(stockId);
+            await _context.Comments.AddAsync(commentModel);
+            await _context.SaveChangesAsync();
+
+            return commentModel.ToCommentDto();
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -65,6 +84,18 @@ namespace api.Repository
             commentUpdate.Content = Commentmodeldto.Content;
             await _context.SaveChangesAsync();
             return commentUpdate;
+        }
+
+        public async Task<CommentDto?> UpdateAsyncDto(int id, UpdateCommentDto Commentmodeldto)
+        {
+            var comModel = await _context.Comments.FirstOrDefaultAsync(s => s.Id == id);
+            if (comModel == null)
+            {
+                return null;
+            }
+            Commentmodeldto.MapToExistingComment(comModel); 
+            await _context.SaveChangesAsync();
+            return comModel.ToCommentDto(); 
         }
     }
 }

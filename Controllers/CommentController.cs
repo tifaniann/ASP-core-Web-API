@@ -52,21 +52,26 @@ namespace api.Controllers
 
         [HttpPost("{stockId}")]
 
-        public async Task<IActionResult> CreateComment([FromRoute] int stockId, CreateCommentDto commentDto)
+        public async Task<IActionResult> CreateComment([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
             if (!await _stockRepo.IsStockExists(stockId))
             {
                 return BadRequest($"Stock with ID {stockId} does not exist.");
             }
 
-            var commentMdl = commentDto.ToCommentFromCreate(stockId);
-            await _commentRepo.createAsync(commentMdl);
-            Console.WriteLine($"Created ID: {commentMdl.Id}");
-            return CreatedAtRoute("CommentDetails", new { id = commentMdl.Id }, commentMdl);
+            // var commentModel = commentDto.ToCommentFromCreate(stockId);
+            var commentModel = await _commentRepo.createAsyncDto(commentDto, stockId);
+            return CreatedAtRoute("CommentDetails", new { id = commentModel.Id }, commentModel);
+
+            // var commentMdl = commentDto.ToCommentFromCreate(stockId);
+            // await _commentRepo.createAsync(commentMdl);
+            // Console.WriteLine($"Created ID: {commentMdl.Id}");
+            // return CreatedAtRoute("CommentDetails", new { id = commentMdl.Id }, commentMdl);
         }
 
         [HttpPut("{stockId}")]
@@ -76,10 +81,11 @@ namespace api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var update_comment = await _commentRepo.UpdateAsync(stockId, commentDto.ToCommentFromUpdate(stockId));
-            if (!await _stockRepo.IsStockExists(stockId))
+
+            var update_comment = await _commentRepo.UpdateAsyncDto(stockId, commentDto);
+            if (update_comment == null)
             {
-                return BadRequest($"Stock with ID {stockId} does not exist.");
+                return NotFound($"Comment with ID {stockId} does not exist.");
             }
             return CreatedAtRoute("CommentDetails", new { id = update_comment.Id }, update_comment);
         }
