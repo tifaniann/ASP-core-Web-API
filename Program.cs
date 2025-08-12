@@ -31,11 +31,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); //Ini adalah baris yang membuat Swagger bekerja.
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
-    });
 
 
 

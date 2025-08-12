@@ -10,13 +10,13 @@ namespace api.Helper
         public string? CompanyName { get; set; } = null;
         public string? Symbol { get; set; } = null;
         public string? Industry { get; set; } = null;
-        public enum SortOption
-        {
-            Symbol,
-            Industry
-        }
-        // public string? SortBy { get; set; } = null;
-        public SortOption SortingBy { get; set; } = SortOption.Symbol;
+        // public enum SortOption
+        // {
+        //     Symbol,
+        //     Industry
+        // }
+        public string? SortBy { get; set; } = null;
+        // public SortOption SortingBy { get; set; } = SortOption.Symbol;
         public bool isDescending { get; set; } = false;
     }
 }
