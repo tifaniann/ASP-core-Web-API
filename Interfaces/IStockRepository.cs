@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.DTOS.Stock;
+using api.Helper;
 using api.Models;
 
 namespace api.Interfaces
@@ -12,7 +13,7 @@ namespace api.Interfaces
     //interface digunakan untuk kelas yang memiliki perilaku yang sama
     public interface IStockRepository
     {
-        Task<List<StockDto>> GetAllAsyncDto();
+        Task<List<StockDto>> GetAllAsyncDto(QueryObject query);
         Task<List<Stock>> GetAllAsync();
         Task<StockDto?> GetByIdAsync(int id);
         Task<StockDto> CreateAsyncDto(CreateStockRequestDto Stockdto);

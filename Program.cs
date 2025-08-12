@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 
 
@@ -27,8 +28,16 @@ builder.Services.AddControllers() // ini fungsinya untuk menambahkan layanan kon
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(); //Ini adalah baris yang membuat Swagger bekerja.
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+    });
+
+
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     {

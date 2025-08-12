@@ -25,7 +25,7 @@ namespace api.Repository
             int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
 
             // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Comments
-            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
+            await _context.Database.ExecuteSqlInterpolatedAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
             await _context.Comments.AddAsync(commentmodel);
             await _context.SaveChangesAsync();
             return commentmodel;
@@ -36,7 +36,7 @@ namespace api.Repository
             int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
 
             // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Comments
-            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
+            await _context.Database.ExecuteSqlInterpolatedAsync($"DBCC CHECKIDENT ('Comments', RESEED, {maxId})");
 
             // Insert comment baru
             var commentModel = commentDtomodel.ToCommentFromCreate(stockId);

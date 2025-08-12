@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.DTOS.Stock;
+using api.Helper;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -30,13 +31,13 @@ namespace api.Controllers
         }
 
         [HttpGet] // untuk mengambil
-        public async Task<IActionResult> GetAllStock() //IActionResult Adalah interface. interface digunakan untuk kelas yang memiliki perilaku yang sama
+        public async Task<IActionResult> GetAllStock([FromQuery]QueryObject query) //IActionResult Adalah interface. interface digunakan untuk kelas yang memiliki perilaku yang sama
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var stocks = await _stockDtoRepo.GetAllAsyncDto();
+            var stocks = await _stockDtoRepo.GetAllAsyncDto(query);
             return Ok(stocks); // Kembalikan data dengan status 200 OK. 200 OK adalah status HTTP yang menunjukkan bahwa permintaan berhasil diproses.
         }
 

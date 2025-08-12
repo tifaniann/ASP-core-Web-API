@@ -9,6 +9,8 @@ using api.Models;
 using api.DTOS.Stock;
 using api.Mappers;
 using Microsoft.EntityFrameworkCore;
+using api.Helper;
+using static api.Helper.QueryObject;
 
 namespace api.Repository
 {
@@ -21,11 +23,49 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<List<StockDto>> GetAllAsyncDto()
+        public async Task<List<StockDto>> GetAllAsyncDto(QueryObject query)
         {
-            return await _context.Stocks.Include(c => c.Comments)
-                .Select(s => s.ToStockDto())
-                .ToListAsync();
+            var stocks = _context.Stocks.Include(c => c.Comments).AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.CompanyName))
+            {
+                stocks = stocks.Where(s => s.CompanyName.Contains(query.CompanyName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Symbol))
+            {
+                stocks = stocks.Where(s => s.Symbol.Contains(query.Symbol));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Industry))
+            {
+                stocks = stocks.Where(s => s.Industry.Contains(query.Industry));
+            }
+
+            // dipake kalo input query.SortBy (JANGAN DIHAPUS)
+            // if (!string.IsNullOrWhiteSpace(query.SortBy))
+            // {
+            //     if (query.SortBy.Equals("Symbol", StringComparison.OrdinalIgnoreCase)) //StringComparison.OrdinalIgnoreCase = Bandingkan dua string tapi ignore lower/upper case
+            //     {
+            //         stocks = query.isDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol); //if else if true : false
+            //     }
+            //     else if (query.SortBy.Equals("Industry", StringComparison.OrdinalIgnoreCase))
+            //     {
+            //         stocks = query.isDescending ? stocks.OrderByDescending(s => s.Industry) : stocks.OrderBy(s => s.Industry); //if else if true : false
+            //     }
+            // }
+
+            switch (query.SortingBy)
+            {
+                case SortOption.Symbol:
+                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.Symbol) : stocks.OrderBy(s => s.Symbol);
+                    break;
+                case SortOption.Industry:
+                    stocks = query.isDescending ? stocks.OrderByDescending(s => s.Industry) : stocks.OrderBy(s => s.Industry);
+                    break;
+            }
+
+            return await stocks.Select(s => s.ToStockDto()).ToListAsync();
             //s(alias semacam i dalam looping): Untuk setiap data Stock yang diambil, ubah menjadi StockDto menggunakan metode ekstensi ToStockDto() yang ada di Mappers/StockMappers.cs
             // _context: Ambil semua data dari tabel Stocks di database, dan ubah jadi List<Stock>
         }
@@ -46,10 +86,10 @@ namespace api.Repository
 
         public async Task<StockDto> CreateAsyncDto(CreateStockRequestDto stockDto)
         {
-            int maxId = await _context.Comments.MaxAsync(c => (int?)c.Id) ?? 0;
+            int maxId = await _context.Stocks.MaxAsync(c => (int?)c.Id) ?? 0;
 
             // Reset IDENTITY untuk ambil id maksimum yang ada di tabel Stocks
-            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT ('Stocks', RESEED, {maxId})");
+            await _context.Database.ExecuteSqlInterpolatedAsync($"DBCC CHECKIDENT ('Stocks', RESEED, {maxId})");
 
             var stockModel = stockDto.ToStockFromCreateDto(); 
             await _context.Stocks.AddAsync(stockModel); // _context: Tambahkan data Stock baru ke tabel Stocks di database
