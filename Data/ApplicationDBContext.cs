@@ -20,6 +20,7 @@ namespace api.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
+        // public DbSet<User> Users { get; set; }
 
         // Konfigurasi hubungan antar entitas dan seeding data
         protected override void OnModelCreating(ModelBuilder builder)
