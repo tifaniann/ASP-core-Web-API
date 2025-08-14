@@ -20,7 +20,7 @@ namespace api.Data
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
-        // public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         // Konfigurasi hubungan antar entitas dan seeding data
         protected override void OnModelCreating(ModelBuilder builder)
@@ -47,13 +47,15 @@ namespace api.Data
                 {
                     Id = "1",
                     Name = "Admin",
-                    NormalizedName = "ADMIN"
+                    NormalizedName = "ADMIN",
+                    ConcurrencyStamp = "a1111111-1111-1111-1111-111111111111"
                 },
                 new IdentityRole
                 {
                     Id = "2",
                     Name = "User",
-                    NormalizedName = "USER"
+                    NormalizedName = "USER",
+                    ConcurrencyStamp = "b2222222-2222-2222-2222-222222222222"
                 }
             };
 
