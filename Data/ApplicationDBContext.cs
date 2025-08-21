@@ -11,9 +11,9 @@ namespace api.Data
     public class ApplicationDBContext : DbContext
     {
         // Konstruktor menerima opsi koneksi ke DB
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions)
-            : base(dbContextOptions)
+        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> dbContextOptions) : base(dbContextOptions)
         {
+            
         }
 
         // DbSet akan otomatis membuat tabel di DB

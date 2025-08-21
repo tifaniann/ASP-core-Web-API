@@ -10,7 +10,7 @@ using api.Mappers;
 
 namespace api.Controllers
 {
-    [Route("api/comments")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
     {

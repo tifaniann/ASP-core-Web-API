@@ -16,7 +16,7 @@ namespace api.Controllers
     //controller ini akan menangani permintaan HTTP untuk entitas Stock. 
     // controller adalah class yang menangani permintaan HTTP dan mengembalikan respons HTTP.
     // kelas yang digunakan untuk mengelola data Stock ke database melalui api
-    [Route("api/stock")]
+    [Route("api/[controller]")]
     [ApiController]
     //dua diatas wajib ada di setiap controller, fungsinya untuk menyambungkan controller dengan route
     public class StockController : ControllerBase
@@ -41,7 +41,7 @@ namespace api.Controllers
             return Ok(stocks); // Kembalikan data dengan status 200 OK. 200 OK adalah status HTTP yang menunjukkan bahwa permintaan berhasil diproses.
         }
 
-        [HttpGet("stock/{id}")] // untuk mengambil berdasarkan id, contoh GET http://localhost:5000/stock/7
+        [HttpGet("{id}")] // untuk mengambil berdasarkan id, contoh GET http://localhost:5000/stock/7
 
         //async digunakan untuk mempercepat proses pengambilan data dari database
         //async await digunakan untuk mempercepat proses pengambilan data dari database/kode
@@ -64,12 +64,14 @@ namespace api.Controllers
         [HttpPost] // untuk menambahkan data baru
         public async Task<IActionResult> CreateStock([FromBody] CreateStockRequestDto stockDto) // [FromBody] digunakan untuk mengambil data dari body request. jadi kita mengambil data dari body request kemudian dimasukkan ke dalam database
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var stockModel = await _stockDtoRepo.CreateAsyncDto(stockDto); // _context: Tambahkan data Stock baru ke tabel Stocks di database
-            return CreatedAtAction(nameof(GetStockById), new { id = stockModel.Id }, stockModel); // Kembalikan status 201 Created dan lokasi dari data yang baru dibuat
+            // return CreatedAtAction(nameof(GetStockById), new { id = stockModel.Id }, stockModel); // Kembalikan status 201 Created dan lokasi dari data yang baru dibuat
+            //CreatedAtAction untuk menambah data baru. untuk return bisa pake CreatedAtAction jika di client mau ngasih tau alamat dari data yang baru dibuat
+            return Ok(stockModel); //atau bisa pake ini hanya untuk return data sukses tanpa ngasih tau alamatnya
 
         }
 
